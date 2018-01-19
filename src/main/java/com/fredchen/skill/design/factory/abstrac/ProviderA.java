@@ -1,7 +1,7 @@
 package com.fredchen.skill.design.factory.abstrac;
 
-import test.my.design.factory.FactoryMethodA;
-import test.my.design.factory.IFactory;
+import com.fredchen.skill.design.factory.FactoryMethodA;
+import com.fredchen.skill.design.factory.IFactory;
 
 public class ProviderA implements IProvider{
 

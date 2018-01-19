@@ -1,18 +1,14 @@
 package com.fredchen.skill.psd;
 
-       
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.security.Key;
-
-import javacommon.util.MD5Util;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.Key;
 
        
 /** 
@@ -137,8 +133,8 @@ public class TestPassword {
     	System.out.println(eUrl);
     	String dUrl = URLDecoder.decode(eUrl, "UTF-8");
     	System.out.println(dUrl);
-    	String md5 = MD5Util.getMD5(eUrl+"1460958479");
-    	System.out.println(md5);
+    	//String md5 = MD5Util.getMD5(eUrl+"1460958479");
+    	//System.out.println(md5);
 
 		System.err.println(34/10);
 	}

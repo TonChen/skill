@@ -1,7 +1,8 @@
 package com.fredchen.skill.designs.factory.abstracts;
 
-import test.my.designs.factory.simple.Cpu;
-import test.my.designs.factory.simple.Mainboard;
+
+import com.fredchen.skill.designs.factory.simple.Cpu;
+import com.fredchen.skill.designs.factory.simple.Mainboard;
 
 public interface AbstractFactory {
 	/**

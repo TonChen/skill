@@ -1,6 +1,6 @@
 package com.fredchen.skill.designs.adapter.object;
 
-import test.my.designs.adapter.clazz.Adaptee;
+import com.fredchen.skill.designs.adapter.clazz.Adaptee;
 
 /**
  * 结构型

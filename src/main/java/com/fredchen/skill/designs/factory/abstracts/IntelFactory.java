@@ -1,9 +1,9 @@
 package com.fredchen.skill.designs.factory.abstracts;
 
-import test.my.designs.factory.simple.Cpu;
-import test.my.designs.factory.simple.IntelCpu;
-import test.my.designs.factory.simple.IntelMainboard;
-import test.my.designs.factory.simple.Mainboard;
+import com.fredchen.skill.designs.factory.simple.Cpu;
+import com.fredchen.skill.designs.factory.simple.IntelCpu;
+import com.fredchen.skill.designs.factory.simple.IntelMainboard;
+import com.fredchen.skill.designs.factory.simple.Mainboard;
 
 public class IntelFactory implements AbstractFactory {
 

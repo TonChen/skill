@@ -4,7 +4,15 @@ import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @Author: fredchen
@@ -47,7 +55,7 @@ public class FileHandler {
     public void newReadFile() throws IOException {
         Path path1 = Paths.get("/home/biezhi", "a.txt");
         Path path2 = Paths.get("/home/biezhi/a.txt");
-        URI u = URI.create("file:////home/biezhi/a.txt");
+        URI u = URI.create("file:/E://logs/oms-web");
         Path pathURI = Paths.get(u);
 
 
@@ -76,8 +84,8 @@ public class FileHandler {
         //Files还有一些其他的常用方法
         InputStream ins = Files.newInputStream(path);
         OutputStream ops = Files.newOutputStream(path);
-        Reader reader = Files.newBufferedReader(path);
-        Writer writer = Files.newBufferedWriter(path);
+        Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+        Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
 
         //创建文件、目录
         if (!Files.exists(path)) {
@@ -95,9 +103,79 @@ public class FileHandler {
         Files.createTempDirectory(path, prefix);
         Files.createTempDirectory(prefix);
 
+
         //读取一个目录下的文件请使用Files.list和Files.walk方法
         Files.list(path);
         Files.walk(path);
+
+
+        //文件写操作
+        try (BufferedWriter writer1 = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+            writer1.write("测试文件写操作");
+        }
+
+        //遍历一个文件夹
+        Path dir = Paths.get("D:\\webworkspace");
+        try(DirectoryStream<Path> stream = Files.newDirectoryStream(dir)){
+            stream.forEach((n) -> System.out.println(n.getFileName()));
+        }
+
+        //注：遍历整个目录需要使用：Files.walkFileTree
+        try (Stream<Path> stream = Files.list(Paths.get("E:\\logs\\"))){
+            Iterator<Path> ite = stream.iterator();
+            while(ite.hasNext()){
+                Path pp = ite.next();
+                System.out.println(pp.getFileName());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Path startingDir = Paths.get("C:\\apache-tomcat-8.0.21");
+        List<Path> result = new LinkedList<Path>();
+        Files.walkFileTree(startingDir, new FindJavaVisitor(result));
+        System.out.println("result.size()=" + result.size());
+
+        //创建目录和文件
+        if(Files.exists(Paths.get("E://TEST"))) {
+            Files.createDirectories(Paths.get("E://TEST"));
+            Files.createFile(Paths.get("E://TEST/test.txt"));
+
+            //从文件复制到输出流
+            Files.copy(Paths.get("C://my.ini"), System.out);
+            //从文件复制到文件
+            Files.copy(Paths.get("C://my.ini"), Paths.get("C://my2.ini"), StandardCopyOption.REPLACE_EXISTING);
+            //从输入流复制到文件
+            Files.copy(System.in, Paths.get("C://my3.ini"), StandardCopyOption.REPLACE_EXISTING);
+        }
+
+
+        //读取文件属性
+        Path zip = Paths.get(uri);
+        System.out.println(Files.getLastModifiedTime(zip));
+        System.out.println(Files.size(zip));
+        System.out.println(Files.isSymbolicLink(zip));
+        System.out.println(Files.isDirectory(zip));
+        System.out.println(Files.readAttributes(zip, "*"));
+
+        //读取和设置文件权限
+        Path profile = Paths.get("/home/digdeep/.profile");
+        PosixFileAttributes attrs = Files.readAttributes(profile, PosixFileAttributes.class);// 读取文件的权限
+        Set<PosixFilePermission> posixPermissions = attrs.permissions();
+        posixPermissions.clear();
+        String owner = attrs.owner().getName();
+        String perms = PosixFilePermissions.toString(posixPermissions);
+        System.out.format("%s %s%n", owner, perms);
+
+        posixPermissions.add(PosixFilePermission.OWNER_READ);
+        posixPermissions.add(PosixFilePermission.GROUP_READ);
+        posixPermissions.add(PosixFilePermission.OTHERS_READ);
+        posixPermissions.add(PosixFilePermission.OWNER_WRITE);
+
+        Files.setPosixFilePermissions(profile, posixPermissions);    // 设置文件的权限
+
+
+
 
         //复制、移动一个文件内容到某个路径
         Files.copy(path1, path);
@@ -107,5 +185,18 @@ public class FileHandler {
         Files.delete(path);
     }
 
+    private static class FindJavaVisitor extends SimpleFileVisitor<Path>{
+        private List<Path> result;
+        public FindJavaVisitor(List<Path> result){
+            this.result = result;
+        }
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs){
+            if(file.toString().endsWith(".java")){
+                result.add(file.getFileName());
+            }
+            return FileVisitResult.CONTINUE;
+        }
+    }
 
 }

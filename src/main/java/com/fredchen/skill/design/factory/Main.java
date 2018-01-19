@@ -1,7 +1,7 @@
 package com.fredchen.skill.design.factory;
 
-import test.my.design.factory.abstrac.IProvider;
-import test.my.design.factory.abstrac.ProviderA;
+import com.fredchen.skill.design.factory.abstrac.IProvider;
+import com.fredchen.skill.design.factory.abstrac.ProviderA;
 
 public class Main {
 	public static void main(String[] args) {
