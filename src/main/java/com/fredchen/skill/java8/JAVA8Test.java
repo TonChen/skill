@@ -1,24 +1,58 @@
 package com.fredchen.skill.java8;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.IntSummaryStatistics;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.google.common.primitives.Ints.asList;
+import static java.util.stream.Collectors.toList;
 
 public class JAVA8Test {
 	public static void main(String[] args) {
 //		test9();
-		char[]arr={119,119,119,122,104,117,122,104,117,97,118,99,111,109};
-        for (int i = 0; i < arr.length; i++) { if(i==3){ System.out.print(".");
-            System.out.print(arr[i]);
-        }else if(i==arr.length-3){ System.out.print(".");
-            System.out.print(arr[i]);
-        }else{ System.out.print(arr[i]);
-        }
-        }
+//		char[]arr={119,119,119,122,104,117,122,104,117,97,118,99,111,109};
+//        for (int i = 0; i < arr.length; i++) { if(i==3){ System.out.print(".");
+//            System.out.print(arr[i]);
+//        }else if(i==arr.length-3){ System.out.print(".");
+//            System.out.print(arr[i]);
+//        }else{ System.out.print(arr[i]);
+//        }
+//        }
+
+//		List<String> list = Arrays.asList("hello welcome", "world hello", "hello world",
+//				"hello world welcome");
+//
+//		List<Stream<String>> listResult = list.stream().map(item -> Arrays.stream(item.split(" "))).distinct().collect(toList());
+//		   List<String> listResult2 = list.stream().flatMap(item -> Arrays.stream(item.split(" "))).distinct().collect(toList());
+//		List <Integer> together = Stream.of(asList(1,2),asList(3,4))
+//				.flatMap(Collection::stream)
+//				.collect(toList());
+//		together.forEach(System.out::println);
+
+		List<Integer> list1=new ArrayList<>();
+		list1.add(1);
+		list1.add(2);
+		list1.add(3);
+
+		List<Integer> list2=new ArrayList<>();
+		list2.add(3);
+		list2.add(4);
+		list2.add(5);
+
+		System.out.println("====求交集===");
+
+		List<Integer> list=list1.stream().filter(list2::contains).collect(Collectors.toList());
+		list.stream().forEach(System.out::println);
+
+
+
+
+		System.out.println("====求差集===");
+		list=list2.stream().filter(list1::contains).collect(Collectors.toList());
+		list.stream().forEach(System.out::println);
+
+//		convertTest();
 	}
 	
 	public static void test1(){
@@ -79,7 +113,7 @@ public class JAVA8Test {
 		// 使用lambda表达式
 		List<Integer> costBeforeTax = Arrays.asList(100, 200, 300, 400, 500);
 		costBeforeTax.stream().map((cost) -> cost + .12 * cost).forEach(System.out::println);
-		costBeforeTax = costBeforeTax.stream().map((cost) -> cost + .12 * cost).map(cost -> cost.intValue()).collect(Collectors.toList());
+		costBeforeTax = costBeforeTax.stream().map((cost) -> cost + .12 * cost).map(Double::intValue).collect(toList());
 		System.out.println(costBeforeTax);
 	}
 	
@@ -93,13 +127,13 @@ public class JAVA8Test {
 	//对列表的每个元素应用函数
 	public static void test7(){
 		List<String> G7 = Arrays.asList("USA", "Japan", "France", "Germany", "Italy", "U.K.","Canada");
-		String G7Countries = G7.stream().map(x -> x.toUpperCase()).collect(Collectors.joining(", "));
+		String G7Countries = G7.stream().map(String::toUpperCase).collect(Collectors.joining(", "));
 		System.out.println(G7Countries);
 	}
 	
 	public static void test8(){
 		List<Integer> numbers = Arrays.asList(9, 10, 3, 4, 7, 3, 4);
-		List<Integer> distinct = numbers.stream().map( i -> i*i).distinct().collect(Collectors.toList());
+		List<Integer> distinct = numbers.stream().map( i -> i*i).distinct().collect(toList());
 		System.out.printf("Original List : %s,  Square Without duplicates : %s %n", numbers, distinct);
 	}
 	
@@ -121,8 +155,8 @@ public class JAVA8Test {
 	    collected.add("beta");  
 	    collected.add("cool");  
 	    collected.add("delta");  
-	    collected = collected.stream().map(string -> string.toUpperCase())  
-	            .collect(Collectors.toList());  
+	    collected = collected.stream().map(String::toUpperCase)
+	            .collect(toList());
 	    System.out.println(collected);//此处打印出来的是大写还是小写，为什么？  
 	}
 }

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class CollectionHandler {
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) {
         convertTest();
 
     }
@@ -34,7 +34,7 @@ public class CollectionHandler {
         collected.add("beta");
         collected.add("cool");
         collected.add("delta");
-        List<String> list = collected.stream().map(string -> string.toUpperCase()).collect(Collectors.toList());
+        List<String> list = collected.stream().map(String::toUpperCase).collect(Collectors.toList());
         System.out.println(list);//此处打印出来的是大写还是小写，为什么？
     }
 
